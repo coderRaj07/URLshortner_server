@@ -3,11 +3,13 @@ const cron = require("node-cron");
 const { connectToMongoDB } = require("./connect");
 const urlRoute = require("./routes/url");
 const URL = require("./models/url");
-
+const dotenv = require("dotenv");
 const app = express();
 const PORT = 8001;
 
-connectToMongoDB("mongodb+srv://coderRaj07:H9Ta3ijJ1g5KggRQ@awscrudserverless.aecl4g4.mongodb.net/AWSCRUDserverless").then(() =>
+dotenv.config();
+
+connectToMongoDB(process.env.DB).then(() =>
   console.log("Mongodb connected")
 );
 
