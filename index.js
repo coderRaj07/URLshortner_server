@@ -16,7 +16,7 @@ connectToMongoDB(process.env.DB).then(() =>
   console.log("Mongodb connected")
 );
 
-app.use(favicon(__dirname + 'icons8-favicon-16.png'));
+// app.use(favicon(__dirname + 'icons8-favicon-16.png'));
 
 app.use(express.json());
 
