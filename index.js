@@ -1,3 +1,4 @@
+const http = require("http");
 const express = require("express");
 const cron = require("node-cron");
 const { connectToMongoDB } = require("./connect");
@@ -5,10 +6,11 @@ const urlRoute = require("./routes/url");
 const URL = require("./models/url");
 const favicon = require('express-favicon');
 const dotenv = require("dotenv");
-const app = express();
-const PORT = 8001;
 
 dotenv.config();
+
+const app = express();
+const PORT = 8001;
 
 connectToMongoDB(process.env.DB).then(() =>
   console.log("Mongodb connected")
@@ -40,7 +42,9 @@ app.get("/:shortId", async (req, res) => {
   res.redirect(entry.redirectURL);
 });
 
-app.listen(PORT, () => {
+const server = http.createServer(app);
+
+server.listen(PORT, () => {
   console.log(`Server Started at PORT:${PORT}`);
   cron.schedule("*/5 * * * *", async () => {
     const now = new Date();
@@ -56,4 +60,3 @@ app.listen(PORT, () => {
     });
   });
 });
-
