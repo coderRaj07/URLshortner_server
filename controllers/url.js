@@ -11,11 +11,14 @@ async function handleGenerateNewShortURL(req, res) {
   // Set expiration duration based on the query parameter
   const expirationDuration = req.query.expiration === 'true' ? 30 : null;
 
+  const creationTime = new Date();
+
   await URL.create({
     shortId: shortID,
     redirectURL: body.url,
     visitHistory: [],
     expirationDuration: expirationDuration,
+    createdAt: creationTime,
   });
 
   return res.json({ id: shortID });

@@ -36,13 +36,19 @@ app.get("/:shortId", async (req, res) => {
 });
 
 app.listen(PORT, () => {
-  console.log(`Server Started at PORT:${PORT}`)
-  cron.schedule("*/30 * * * *", async () => {
+  console.log(`Server Started at PORT:${PORT}`);
+  cron.schedule("*/5 * * * *", async () => {
     const now = new Date();
-    await URL.deleteMany({
-      expirationDuration: { $ne: null },
-      createdAt: { $lt: new Date(now - 30 * 60 * 1000) },
+    const urls = await URL.find({ expirationDuration: { $ne: null } });
+
+    urls.forEach(async (url) => {
+      const creationTime = url.createdAt;
+      if (now - creationTime > 30 * 60 * 1000) {
+        // Delete the URL if it's 30 minutes or older
+        await URL.deleteOne({ _id: url._id });
+        console.log(`Expired URL ${url.shortId} deleted`);
+      }
     });
-    console.log("Expired URLs deleted");
-  })
+  });
 });
+
