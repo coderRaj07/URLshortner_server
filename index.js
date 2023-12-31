@@ -3,6 +3,7 @@ const cron = require("node-cron");
 const { connectToMongoDB } = require("./connect");
 const urlRoute = require("./routes/url");
 const URL = require("./models/url");
+const favicon = require('express-favicon');
 const dotenv = require("dotenv");
 const app = express();
 const PORT = 8001;
@@ -12,6 +13,8 @@ dotenv.config();
 connectToMongoDB(process.env.DB).then(() =>
   console.log("Mongodb connected")
 );
+
+app.use(favicon(__dirname + 'icons8-favicon-16.png'));
 
 app.use(express.json());
 
