@@ -6,6 +6,7 @@ const urlSchema = new mongoose.Schema(
       type: String,
       required: true,
       unique: true,
+      index: true,
     },
     redirectURL: {
       type: String,
@@ -15,6 +16,7 @@ const urlSchema = new mongoose.Schema(
     expirationDuration: {
       type: Number, // Expiration duration in minutes
       default: null, // Default to no expiration
+      index: true,
     },
   },
   { timestamps: true }
