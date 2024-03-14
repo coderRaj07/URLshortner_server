@@ -40,8 +40,8 @@ app.get("/:shortId", async (req, res) => {
   res.redirect(entry.redirectURL);
 });
 
-// Define cron job and endpoint for triggering it
-cron.schedule("*/5 * * * *", async () => {
+// Define function for cron job logic
+const handleCronJob = async () => {
   const now = new Date();
   const urls = await URL.find({ expirationDuration: { $ne: null } });
 
@@ -53,10 +53,11 @@ cron.schedule("*/5 * * * *", async () => {
       console.log(`Expired URL ${url.shortId} deleted`);
     }
   });
-});
+};
 
 app.post("/cronjobs/start", (req, res) => {
   // You can use this endpoint to trigger the cron job manually if needed
+  handleCronJob();
   res.json({ message: "Cron job started" });
 });
 
